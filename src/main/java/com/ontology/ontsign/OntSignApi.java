@@ -7,7 +7,6 @@ import com.docusign.esign.client.ApiClient;
 import com.docusign.esign.client.ApiException;
 import com.docusign.esign.model.Envelope;
 import com.docusign.esign.model.EnvelopeDefinition;
-import com.docusign.esign.model.EnvelopeSummary;
 import com.github.ontio.OntSdk;
 import com.github.ontio.account.Account;
 import com.github.ontio.common.Helper;
@@ -19,7 +18,7 @@ import com.github.ontio.smartcontract.neovm.abi.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OntologyApi extends EnvelopesApi {
+public class OntSignApi extends EnvelopesApi {
 
     private OntSdk ontSdk;
     private long gasPrice;
@@ -27,7 +26,7 @@ public class OntologyApi extends EnvelopesApi {
     private String contractAddr;
     private String nodeRestURL;
 
-    public OntologyApi(String nodeRestURL, String contractAddr, long gasPrice, long gasLimit) throws Exception {
+    public OntSignApi(String nodeRestURL, String contractAddr, long gasPrice, long gasLimit) throws Exception {
         this.nodeRestURL = nodeRestURL;
         ontSdk = OntSdk.getInstance();
         ontSdk.setRestful(nodeRestURL);
@@ -37,7 +36,7 @@ public class OntologyApi extends EnvelopesApi {
         this.gasLimit = gasLimit;
     }
 
-    public OntologyApi(ApiClient apiClient, String nodeRestURL, String contractAddr, long gasPrice, long gasLimit)
+    public OntSignApi(ApiClient apiClient, String nodeRestURL, String contractAddr, long gasPrice, long gasLimit)
             throws Exception {
         super(apiClient);
         this.nodeRestURL = nodeRestURL;
@@ -132,15 +131,15 @@ public class OntologyApi extends EnvelopesApi {
         return "";
     }
 
-    public OntologyEnvelopeSummary createSignRequest(String accountId, EnvelopeDefinition envelopeDefinition)
+    public EnvelopeSummary createSignRequest(String accountId, EnvelopeDefinition envelopeDefinition)
             throws ApiException {
         return this.createSignRequest(accountId, envelopeDefinition, null);
     }
 
-    public OntologyEnvelopeSummary createSignRequest(String accountId, EnvelopeDefinition envelopeDefinition,
-                                                     EnvelopesApi.CreateEnvelopeOptions options) throws ApiException {
+    public EnvelopeSummary createSignRequest(String accountId, EnvelopeDefinition envelopeDefinition,
+                                             EnvelopesApi.CreateEnvelopeOptions options) throws ApiException {
 
-        EnvelopeSummary envelopeSummary = super.createEnvelope(accountId, envelopeDefinition, options);
-        return (OntologyEnvelopeSummary) envelopeSummary;
+        com.docusign.esign.model.EnvelopeSummary envelopeSummary = super.createEnvelope(accountId, envelopeDefinition, options);
+        return (EnvelopeSummary) envelopeSummary;
     }
 }
