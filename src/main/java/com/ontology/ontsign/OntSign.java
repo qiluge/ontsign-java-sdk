@@ -3,7 +3,6 @@ package com.ontology.ontsign;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.docusign.esign.api.EnvelopesApi;
-import com.docusign.esign.client.ApiClient;
 import com.docusign.esign.client.ApiException;
 import com.docusign.esign.model.Envelope;
 import com.docusign.esign.model.EnvelopeDefinition;
@@ -14,11 +13,12 @@ import com.github.ontio.core.transaction.Transaction;
 import com.github.ontio.smartcontract.neovm.abi.AbiFunction;
 import com.github.ontio.smartcontract.neovm.abi.BuildParams;
 import com.github.ontio.smartcontract.neovm.abi.Parameter;
+import com.ontology.ontsign.provider.ESignatureProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OntSignApi extends EnvelopesApi {
+public class OntSign {
 
     private OntSdk ontSdk;
     private long gasPrice;
@@ -26,7 +26,9 @@ public class OntSignApi extends EnvelopesApi {
     private String contractAddr;
     private String nodeRestURL;
 
-    public OntSignApi(String nodeRestURL, String contractAddr, long gasPrice, long gasLimit) throws Exception {
+    private ESignatureProvider eSignatureProvider;
+
+    public OntSign(String nodeRestURL, String contractAddr, long gasPrice, long gasLimit) throws Exception {
         this.nodeRestURL = nodeRestURL;
         ontSdk = OntSdk.getInstance();
         ontSdk.setRestful(nodeRestURL);
@@ -36,9 +38,9 @@ public class OntSignApi extends EnvelopesApi {
         this.gasLimit = gasLimit;
     }
 
-    public OntSignApi(ApiClient apiClient, String nodeRestURL, String contractAddr, long gasPrice, long gasLimit)
+    public OntSign(ESignatureProvider provider, String nodeRestURL, String contractAddr, long gasPrice, long gasLimit)
             throws Exception {
-        super(apiClient);
+        this.eSignatureProvider = provider;
         this.nodeRestURL = nodeRestURL;
         ontSdk = OntSdk.getInstance();
         ontSdk.setRestful(nodeRestURL);
@@ -58,8 +60,8 @@ public class OntSignApi extends EnvelopesApi {
 
     public String commitSignedFileInfo(Account payer, Account ownerOntIdSigner, long signerPubKeyIndex,
                                        String docusignAccountId, SignedFileInfo signedFileInfo) throws Exception {
-        Envelope envelope = this.getEnvelope(docusignAccountId, signedFileInfo.envelopeId);
-        if (!"completed".equals(envelope.getStatus())) {
+        boolean completed = this.eSignatureProvider.isCompleted(signedFileInfo.envelopeId);
+        if (!completed) {
             throw new Exception("envelope is not completed!");
         }
         String name = "commitSignedFileInfo";
@@ -129,17 +131,5 @@ public class OntSignApi extends EnvelopesApi {
             return tx.hash().toHexString();
         }
         return "";
-    }
-
-    public EnvelopeSummary createSignRequest(String accountId, EnvelopeDefinition envelopeDefinition)
-            throws ApiException {
-        return this.createSignRequest(accountId, envelopeDefinition, null);
-    }
-
-    public EnvelopeSummary createSignRequest(String accountId, EnvelopeDefinition envelopeDefinition,
-                                             EnvelopesApi.CreateEnvelopeOptions options) throws ApiException {
-
-        com.docusign.esign.model.EnvelopeSummary envelopeSummary = super.createEnvelope(accountId, envelopeDefinition, options);
-        return (EnvelopeSummary) envelopeSummary;
     }
 }

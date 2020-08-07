@@ -6,6 +6,18 @@
     <groupId>com.ontology</groupId>
     <artifactId>ontsign-java-sdk</artifactId>
     <version>1.0</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <packaging>jar</packaging>
 
     <name>OntSign Java SDK</name>
@@ -44,6 +56,10 @@
             <version>5.2.1.RELEASE</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.hellosign</groupId>
+            <artifactId>hellosign-java-sdk</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
 </project>

@@ -3,8 +3,9 @@ import com.docusign.esign.client.ApiClient;
 import com.github.ontio.OntSdk;
 import com.github.ontio.account.Account;
 import com.github.ontio.sdk.wallet.Identity;
-import com.ontology.ontsign.OntSignApi;
+import com.ontology.ontsign.OntSign;
 import com.ontology.ontsign.SignedFileInfo;
+import com.ontology.ontsign.provider.Docusign;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,9 +14,9 @@ import org.springframework.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OntSignApiTest {
+public class OntSignTest {
 
-    String accessToken = "eyJ0eXAiOiJNVCIsImFsZyI6IlJTMjU2Iiwia2lkIjoiNjgxODVmZjEtNGU1MS00Y2U5LWFmMWMtNjg5ODEyMjAzMzE3In0.AQsAAAABAAUABwCAR7Vr7TnYSAgAgIfYeTA62EgCAEDxWRIGnSFKsfKGXlLCefwVAAEAAAAYAAEAAAAFAAAADQAkAAAANjY4YWU2ZmItOGY2Yy00MmU3LTkyMTctMTQ4MjZkNTAxZmJjIgAkAAAANjY4YWU2ZmItOGY2Yy00MmU3LTkyMTctMTQ4MjZkNTAxZmJjEgABAAAACwAAAGludGVyYWN0aXZlMAAAsRxr7TnYSDcAIPqR6CZR-USQiX7FnTH-3w.svK420OnjbSa7dPRNrq2FBRYFjEP1pMmH666MIRIWx6vPHq6Ib0P09YVr8ylgR4dByPC1T5VhwJ0lXvPLU4hYWldo-1eKjZbJRQq4DTqYk9Fbu6RjKf440GEtoSB1O3CV4SYNu9dY2ikBRpSqhfeKot9Y1Nwp3CfXTl8OrumEzv8xuUWj0ajauVSpaDMVUcROrOU6Zz_JjK2TqUQANiJeRQlhr2QibzhXQyjbYT36GvGs7yYDT_IDF8gnirUxOKFke_wqmYrd4R_dvTT6cDAmkmTUyis-beO2mEvbhGiAWIpLa2OIe34jNwNUn3fRtLfJVYzc_MyFZNEr7unKQEVeg";
+    String accessToken = "eyJ0eXAiOiJNVCIsImFsZyI6IlJTMjU2Iiwia2lkIjoiNjgxODVmZjEtNGU1MS00Y2U5LWFmMWMtNjg5ODEyMjAzMzE3In0.AQsAAAABAAUABwAAkk57ujrYSAgAANJxif062EgCAEDxWRIGnSFKsfKGXlLCefwVAAEAAAAYAAEAAAAFAAAADQAkAAAANjY4YWU2ZmItOGY2Yy00MmU3LTkyMTctMTQ4MjZkNTAxZmJjIgAkAAAANjY4YWU2ZmItOGY2Yy00MmU3LTkyMTctMTQ4MjZkNTAxZmJjEgABAAAACwAAAGludGVyYWN0aXZlMACA-7V6ujrYSDcAIPqR6CZR-USQiX7FnTH-3w.f_cSVgyDZufMn0vDiMAoUt-TeLdB7VgaZtZIA_QNx8rjgNWPHNIZ3Aj0EyzizNiww9WZZpnRPxJw3toCUq4u9g6R1PTI3sStr0KT0C1rNecGBA0ZjyLWDoq1zgpgC0yn4TYpB9yRP6u-IETzQXisP-z6R6_pTUqLWUelS6kKeA5IRav7t_c5kY1Dd3kKhsqdCF77FVKFnT9kyUze-hF1yn8xvNhJuHdYllF40zvkCRy00ZRvwtBb7YusXjznwMoqsyagJEClF8hgYlX2qPdmYViBCiM-AxFCPO61lOUbmx8Dz0kStfB0ufnArBxnDcllEabDJvFePvS4koiho2hPaQ";
 
     String BEARER_AUTHENTICATION = "Bearer ";
     String basePath = "https://demo.docusign.net/restapi";
@@ -29,14 +30,15 @@ public class OntSignApiTest {
     Account payer;
     Identity ownerDID;
     Account owner;
-    OntSignApi api;
+    OntSign api;
 
     @Before
     public void init() throws Exception {
         ApiClient apiClient = new ApiClient(basePath);
         apiClient.addDefaultHeader(HttpHeaders.AUTHORIZATION, BEARER_AUTHENTICATION + accessToken);
         apiClient.addAuthorization("docusignAccessCode", null);
-        api = new OntSignApi(apiClient, restUrl, contractAddr, 2500, 5000000);
+        Docusign docusign = new Docusign(apiClient, accountId);
+        api = new OntSign(docusign, restUrl, contractAddr, 2500, 5000000);
         OntSdk sdk = OntSdk.getInstance();
         sdk.openWalletFile("wallet.json");
         payer = sdk.getWalletMgr().getAccount("ATqpnrgVjzmkeHEqPiErnsxTEgi5goor2e", password);
