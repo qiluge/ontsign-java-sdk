@@ -49,18 +49,6 @@ public class HelloSign extends HelloSignClient implements ESignatureProvider {
     }
 
     @Override
-    public boolean isCompleted(String requestId) {
-        try {
-            SignatureRequest request = this.getSignatureRequest(requestId);
-            return request.isComplete();
-        } catch (HelloSignException e) {
-            // TODO: handle exception
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
     public String signDocByEmail(String subject, String docName, String filePath, List<OntSigner> ontSigners,
                                  List<String> cc) throws Exception {
         SignatureRequest request = new SignatureRequest();
@@ -80,5 +68,17 @@ public class HelloSign extends HelloSignClient implements ESignatureProvider {
 
         SignatureRequest newRequest = this.sendSignatureRequest(request);
         return newRequest.getId();
+    }
+
+    @Override
+    public boolean isCompleted(String requestId) {
+        try {
+            SignatureRequest request = this.getSignatureRequest(requestId);
+            return request.isComplete();
+        } catch (HelloSignException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            return false;
+        }
     }
 }

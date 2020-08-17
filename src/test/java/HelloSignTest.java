@@ -1,4 +1,3 @@
-import com.hellosign.sdk.HelloSignClient;
 import com.hellosign.sdk.resource.SignatureRequest;
 import com.hellosign.sdk.resource.support.OauthData;
 import com.ontology.ontsign.bean.OntSigner;
@@ -6,9 +5,6 @@ import com.ontology.ontsign.provider.HelloSign;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
-import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -6,11 +6,15 @@ import com.docusign.esign.client.ApiException;
 import com.docusign.esign.model.*;
 import com.ontology.ontsign.bean.OntSigner;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StreamUtils;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 
 public class Docusign extends EnvelopesApi implements ESignatureProvider {

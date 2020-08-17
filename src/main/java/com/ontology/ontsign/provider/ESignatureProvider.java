@@ -11,8 +11,8 @@ public interface ESignatureProvider {
 
     public void updateOAuthToken(String token);
 
-    public boolean isCompleted(String requestId);
-
     public String signDocByEmail(String subject, String docName, String filePath, List<OntSigner> ontSigners,
                                  List<String> cc) throws Exception;
+
+    public boolean isCompleted(String requestId);
 }
