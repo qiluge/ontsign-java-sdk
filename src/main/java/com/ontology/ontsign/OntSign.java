@@ -13,6 +13,7 @@ import com.github.ontio.core.transaction.Transaction;
 import com.github.ontio.smartcontract.neovm.abi.AbiFunction;
 import com.github.ontio.smartcontract.neovm.abi.BuildParams;
 import com.github.ontio.smartcontract.neovm.abi.Parameter;
+import com.ontology.ontsign.bean.OntSigner;
 import com.ontology.ontsign.provider.ESignatureProvider;
 
 import java.util.ArrayList;
@@ -56,6 +57,11 @@ public class OntSign {
 
     public void updateSDKUrl(String nodeRestURL) {
         ontSdk.setRestful(nodeRestURL);
+    }
+
+    public String signDocByEmail(String subject, String docName, String filePath, List<OntSigner> ontSigners,
+                                 List<String> cc) throws Exception {
+        return this.eSignatureProvider.signDocByEmail(subject, docName, filePath, ontSigners, cc);
     }
 
     public String commitSignedFileInfo(Account payer, Account ownerOntIdSigner, long signerPubKeyIndex,

@@ -5,6 +5,7 @@ import com.github.ontio.account.Account;
 import com.github.ontio.sdk.wallet.Identity;
 import com.ontology.ontsign.OntSign;
 import com.ontology.ontsign.SignedFileInfo;
+import com.ontology.ontsign.bean.OntSigner;
 import com.ontology.ontsign.provider.Docusign;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,9 +15,9 @@ import org.springframework.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OntSignTest {
+public class DocuSignTest {
 
-    String accessToken = "eyJ0eXAiOiJNVCIsImFsZyI6IlJTMjU2Iiwia2lkIjoiNjgxODVmZjEtNGU1MS00Y2U5LWFmMWMtNjg5ODEyMjAzMzE3In0.AQsAAAABAAUABwAAkk57ujrYSAgAANJxif062EgCAEDxWRIGnSFKsfKGXlLCefwVAAEAAAAYAAEAAAAFAAAADQAkAAAANjY4YWU2ZmItOGY2Yy00MmU3LTkyMTctMTQ4MjZkNTAxZmJjIgAkAAAANjY4YWU2ZmItOGY2Yy00MmU3LTkyMTctMTQ4MjZkNTAxZmJjEgABAAAACwAAAGludGVyYWN0aXZlMACA-7V6ujrYSDcAIPqR6CZR-USQiX7FnTH-3w.f_cSVgyDZufMn0vDiMAoUt-TeLdB7VgaZtZIA_QNx8rjgNWPHNIZ3Aj0EyzizNiww9WZZpnRPxJw3toCUq4u9g6R1PTI3sStr0KT0C1rNecGBA0ZjyLWDoq1zgpgC0yn4TYpB9yRP6u-IETzQXisP-z6R6_pTUqLWUelS6kKeA5IRav7t_c5kY1Dd3kKhsqdCF77FVKFnT9kyUze-hF1yn8xvNhJuHdYllF40zvkCRy00ZRvwtBb7YusXjznwMoqsyagJEClF8hgYlX2qPdmYViBCiM-AxFCPO61lOUbmx8Dz0kStfB0ufnArBxnDcllEabDJvFePvS4koiho2hPaQ";
+    String accessToken = "eyJ0eXAiOiJNVCIsImFsZyI6IlJTMjU2Iiwia2lkIjoiNjgxODVmZjEtNGU1MS00Y2U5LWFmMWMtNjg5ODEyMjAzMzE3In0.AQsAAAABAAUABwCANYh4TkLYSAgAgHWrhpFC2EgCAEDxWRIGnSFKsfKGXlLCefwVAAEAAAAYAAEAAAAFAAAADQAkAAAANjY4YWU2ZmItOGY2Yy00MmU3LTkyMTctMTQ4MjZkNTAxZmJjIgAkAAAANjY4YWU2ZmItOGY2Yy00MmU3LTkyMTctMTQ4MjZkNTAxZmJjEgABAAAACwAAAGludGVyYWN0aXZlMAAAn-93TkLYSDcAIPqR6CZR-USQiX7FnTH-3w.R7BmEZyil2-TW9UHntl-MAy06oPcgjptYnSYO4dBqZ67TnER7kQk60PaMEHf9dUNRUCh0b6c3FO6gw4ymRDAyTUqLjgZO7ZrYWLdjjZZ2KqpnQg_Jyewu3TZf_ftf0CPR18SxxhdW2eA8WW7wF05GkjvAh-MIf6WuQmnDH9WNmhrPFw3ILWnmh2k2RjOSyD4dAhqrhOxg5KeM0Ta9gj2PVRTMjHcusChF9uoSbTERUUzyHM_ScJSizVNivEvRU9c3ry7WTDbbc1H_OuhrJytw9HX0afKm9WdQ-webNGt4FKADwgonfQ1GXMiM8j4kFCgg0v07kSeDjdq9yP-tSRQcA";
 
     String BEARER_AUTHENTICATION = "Bearer ";
     String basePath = "https://demo.docusign.net/restapi";
@@ -47,8 +48,21 @@ public class OntSignTest {
     }
 
     @Test
+    public void TestSignFile() throws Exception {
+        List<OntSigner> signers = new ArrayList<>();
+        signers.add(new OntSigner("qiluge", "921444844@qq.com"));
+        signers.add(new OntSigner("wangcheng", "wangcheng@onchain.com"));
+        List<String> cc = new ArrayList<>();
+        cc.add("lawyer@hellosign.com");
+        cc.add("lawyer@example.com");
+        String id = api.signDocByEmail("please sign this doc", "test", "test.pdf",
+                signers, cc);
+        Assert.assertNotNull(id);
+    }
+
+    @Test
     public void TestCommitSignedFileInfo() throws Exception {
-        String envelopeId = "2f295ec6-dbf1-4a79-a1b5-082cd35ac378";
+        String envelopeId = "08f4d501-d75a-4449-973a-4b21883e1018";
         List<String> signers = new ArrayList<>();
         signers.add("did:ont:ATqpnrgVjzmkeHEqPiErnsxTEgi5goor2e");
         signers.add("did:ont:AVwVTBTzztbrwY5ByJfjmN6WFHpxtTYgFN");

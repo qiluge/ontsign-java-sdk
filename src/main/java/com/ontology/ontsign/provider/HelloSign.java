@@ -5,6 +5,11 @@ import com.hellosign.sdk.HelloSignException;
 import com.hellosign.sdk.http.Authentication;
 import com.hellosign.sdk.http.HttpClient;
 import com.hellosign.sdk.resource.SignatureRequest;
+import com.ontology.ontsign.bean.OntSigner;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 public class HelloSign extends HelloSignClient implements ESignatureProvider {
 
@@ -39,6 +44,11 @@ public class HelloSign extends HelloSignClient implements ESignatureProvider {
     }
 
     @Override
+    public void updateOAuthToken(String token) {
+        // TODO:
+    }
+
+    @Override
     public boolean isCompleted(String requestId) {
         try {
             SignatureRequest request = this.getSignatureRequest(requestId);
@@ -48,5 +58,27 @@ public class HelloSign extends HelloSignClient implements ESignatureProvider {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public String signDocByEmail(String subject, String docName, String filePath, List<OntSigner> ontSigners,
+                                 List<String> cc) throws Exception {
+        SignatureRequest request = new SignatureRequest();
+        request.setTitle(subject);
+        request.setSubject(subject);
+        for (OntSigner s : ontSigners) {
+            request.addSigner(s.email, s.name);
+        }
+        for (String c : cc) {
+            request.addCC(c);
+        }
+        // TODO: support more feature
+        request.addFile(new File(filePath));
+
+        // TODO: remove test mode
+        request.setTestMode(true);
+
+        SignatureRequest newRequest = this.sendSignatureRequest(request);
+        return newRequest.getId();
     }
 }
