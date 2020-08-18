@@ -65,7 +65,7 @@ public class OntSign {
     }
 
     public String commitSignedFileInfo(Account payer, Account ownerOntIdSigner, long signerPubKeyIndex,
-                                       String docusignAccountId, SignedFileInfo signedFileInfo) throws Exception {
+                                       SignedFileInfo signedFileInfo) throws Exception {
         boolean completed = this.eSignatureProvider.isCompleted(signedFileInfo.envelopeId);
         if (!completed) {
             throw new Exception("envelope is not completed!");

@@ -68,7 +68,7 @@ public class DocuSignTest {
         signers.add("did:ont:AVwVTBTzztbrwY5ByJfjmN6WFHpxtTYgFN");
         SignedFileInfo signedFileInfo = new SignedFileInfo(ownerDID.ontid, contentHash,
                 envelopeId, signers);
-        String txHash = api.commitSignedFileInfo(payer, owner, 1, accountId, signedFileInfo);
+        String txHash = api.commitSignedFileInfo(payer, owner, 1, signedFileInfo);
         Assert.assertNotNull(txHash);
     }
 

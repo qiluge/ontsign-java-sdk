@@ -1,10 +1,7 @@
 package com.ontology.ontsign.provider;
 
-import com.docusign.esign.client.ApiException;
-import com.hellosign.sdk.HelloSignException;
 import com.ontology.ontsign.bean.OntSigner;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface ESignatureProvider {
